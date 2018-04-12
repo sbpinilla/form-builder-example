@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="stylesheet" type="text/css" href="assets/css/demo.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.1/jquery.rateyo.min.css">
+
+  <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+  <title>jQuery formBuilder/formRender Demo</title>
+</head>
+
+<body>
+ <div class="build-wrap"></div>
+   <button id="getXML" type="button">Pintar Formulario</button>
+	<form class="aaaa">
+	<div class="build-static"></div>
+  </form>
+  <button id="datos" type="button">Extraer datos</button>
+  
+  <script src="assets/js/vendor.js"></script>
+  <script src="assets/js/form-builder.min.js"></script>
+  <script src="assets/js/form-render.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.1/jquery.rateyo.min.js"></script>
+
+  
+  <script>
+  
+   function getValues() {
+    var listvalues = new Array();
+    var datastring = $(".aaaa").serializeArray();
+    var data = "{";
+    for (var x = 0; x < datastring.length; x++) {
+        if (data == "{") {
+            data += "\"" + datastring[x].name + "\": \"" + datastring[x].value + "\"";
+        }
+        else {
+            data += ",\"" + datastring[x].name + "\": \"" + datastring[x].value + "\"";
+        }
+    }
+    data += "}";
+    data = JSON.parse(data);
+    listvalues.push(data);
+	console.log(listvalues);
+   // return listvalues;
+};
+  
+jQuery(function($) {
+ 
+  var formBuilder = $('.build-wrap').formBuilder();
+  
+  
+  document.getElementById('getXML').addEventListener('click', function() {
+    console.log(formBuilder.actions.getData('xml'));
+	console.log(formBuilder.actions.getData());
+	
+  var fbRender = document.getElementById('fb-render');
+  var formData = formBuilder.actions.getData();
+
+  var formRenderOpts = {
+    formData,
+    dataType: 'xml'
+  };
+  $('.build-static').formRender(formRenderOpts);
+
+
+});
+
+  document.getElementById('datos').addEventListener('click', function() {
+	getValues() ;
+
+});
+
+
+  
+});
+</script>
+</body>
+
+</html>
